@@ -1,6 +1,9 @@
 import './css/index.css'
 import IMask from 'imask'
 
+import Toastify from 'toastify-js'
+import 'toastify-js/src/toastify.css'
+
 const ccBgColor01 = document.querySelector('.cc-bg svg > g g:nth-child(1) path')
 const ccBgColor02 = document.querySelector('.cc-bg svg > g g:nth-child(2) path')
 const ccLogo = document.querySelector('.cc-logo > span:nth-child(2) > img')
@@ -19,8 +22,6 @@ function setCardType(cardType) {
   ccBgColor02.setAttribute('fill', colors[cardType][1])
   ccLogo.setAttribute('src', `cc-${cardType}.svg`)
 }
-
-// setCardType('javascript')
 
 /*
  * IMask Instruções
@@ -98,12 +99,35 @@ const cardNumPattern = {
 }
 const cardNumMasked = IMask(cardNum, cardNumPattern)
 
-const addBtn = document.querySelector('#add-card')
-
-addBtn.addEventListener('click', e => {
+document.querySelector('form').addEventListener('submit', e => {
   e.preventDefault()
-  console.log('click')
+  clearInputs()
+  showToast()
 })
+
+function showToast() {
+  Toastify({
+    text: 'Cartão adicionado com sucesso',
+    duration: 3000,
+    // close: true,
+    gravity: 'top', // `top` or `bottom`
+    position: 'center', // `left`, `center` or `right`
+    style: {
+      background: 'linear-gradient(to right, #314755, #26a0da)',
+      borderRadius: '25px',
+      width: '300px',
+      padding: '2rem'
+    },
+    offset: {
+      x: '1/2' // horizontal axis - can be a number or a string indicating unity. eg: '2em'
+    }
+  }).showToast()
+}
+
+function clearInputs() {
+  const inputEl = document.querySelectorAll('input')
+  inputEl.forEach(itemValue => (itemValue.value = ''))
+}
 
 const cardHolder = document.querySelector('#card-holder')
 
