@@ -20,7 +20,7 @@ function setCardType(cardType) {
   ccLogo.setAttribute('src', `cc-${cardType}.svg`)
 }
 
-setCardType('javascript')
+// setCardType('javascript')
 
 /*
  * IMask Instruções
@@ -76,12 +76,12 @@ const cardNumPattern = {
     {
       mask: '0000 0000 0000 0000',
       regex: /^(?:6011|65\d{0,2}|64[4-9]\d?)\d{0,12}/,
-      cardtype: 'javascript'
+      cardType: 'javascript'
     },
     {
       mask: '0000 000000 00000',
       regex: /^3[47]\d{0,13}/,
-      cardtype: 'american express'
+      cardType: 'american express'
     },
     {
       mask: '0000 0000 0000 0000',
@@ -93,9 +93,48 @@ const cardNumPattern = {
     const foundMask = dynamicMasked.compiledMasks.find(({ regex }) =>
       number.match(regex)
     )
-    console.log(foundMask)
     return foundMask
   }
 }
-
 const cardNumMasked = IMask(cardNum, cardNumPattern)
+
+const addBtn = document.querySelector('#add-card')
+
+addBtn.addEventListener('click', e => {
+  e.preventDefault()
+  console.log('click')
+})
+
+const cardHolder = document.querySelector('#card-holder')
+
+cardHolder.addEventListener('input', e => {
+  const cardNameEl = document.querySelector('.cc-holder .value')
+  cardNameEl.textContent = e.target.value.length
+    ? e.target.value
+    : 'FULANO DA SILVA'
+})
+
+cardNumMasked.on('accept', () => {
+  const cardType = cardNumMasked.masked.currentMask.cardType
+  const cardNumEl = document.querySelector('.cc-number')
+  cardNumEl.textContent = cardNumMasked.value.length
+    ? cardNumMasked.value
+    : '1234 5678 9012 3456'
+  console.log(cardType)
+
+  setCardType(cardType)
+})
+
+secCodeMasked.on('accept', () => {
+  const ccSecCodeEl = document.querySelector('.cc-security .value')
+  ccSecCodeEl.textContent = secCodeMasked.value.length
+    ? secCodeMasked.value
+    : '123'
+})
+
+expDateMasked.on('accept', () => {
+  const ccSecCodeEl = document.querySelector('.cc-expiration .value')
+  ccSecCodeEl.textContent = expDateMasked.value.length
+    ? expDateMasked.value
+    : '02/32'
+})
