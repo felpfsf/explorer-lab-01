@@ -4,18 +4,22 @@ import IMask from 'imask'
 import Toastify from 'toastify-js'
 import 'toastify-js/src/toastify.css'
 
-const ccBgColor01 = document.querySelector('.cc-bg svg > g g:nth-child(1) path')
-const ccBgColor02 = document.querySelector('.cc-bg svg > g g:nth-child(2) path')
-const ccLogo = document.querySelector('.cc-logo > span:nth-child(2) > img')
-
-console.log(ccLogo.src)
+const cardHolder = document.querySelector('#card-holder')
+const formEl = document.querySelector('form')
 
 function setCardType(cardType) {
+  const ccBgColor01 = document.querySelector(
+    '.cc-bg svg > g g:nth-child(1) path'
+  )
+  const ccBgColor02 = document.querySelector(
+    '.cc-bg svg > g g:nth-child(2) path'
+  )
+  const ccLogo = document.querySelector('.cc-logo > span:nth-child(2) > img')
   const colors = {
     visa: ['#FFED4D', '#436D99'],
     mastercard: ['#C69347', '#DF6F29'],
     javascript: ['#EFF30A', '#CBC88C'],
-    typescript: ['#FFED4D', '#436D99'],
+    typescript: ['#2D57F2', '#436D99'],
     default: ['black', 'gray']
   }
 
@@ -37,31 +41,6 @@ function setCardType(cardType) {
  * 10 anos
  *
  */
-
-const secCode = document.querySelector('#security-code')
-const secPattern = {
-  mask: '0000'
-}
-const secCodeMasked = IMask(secCode, secPattern)
-
-const expDate = document.querySelector('#expiration-date')
-const expDatePattern = {
-  mask: 'MM{/}YY',
-  blocks: {
-    MM: {
-      mask: IMask.MaskedRange,
-      from: 1,
-      to: 12
-    },
-    YY: {
-      mask: IMask.MaskedRange,
-      from: String(new Date().getUTCFullYear()).substring(2),
-      to: String(new Date().getFullYear() + 10).substring(2)
-    }
-  }
-}
-const expDateMasked = IMask(expDate, expDatePattern)
-
 const cardNum = document.querySelector('#card-number')
 const cardNumPattern = {
   mask: [
@@ -100,7 +79,31 @@ const cardNumPattern = {
 }
 const cardNumMasked = IMask(cardNum, cardNumPattern)
 
-document.querySelector('form').addEventListener('submit', e => {
+const expDate = document.querySelector('#expiration-date')
+const expDatePattern = {
+  mask: 'MM{/}YY',
+  blocks: {
+    MM: {
+      mask: IMask.MaskedRange,
+      from: 1,
+      to: 12
+    },
+    YY: {
+      mask: IMask.MaskedRange,
+      from: String(new Date().getUTCFullYear()).substring(2),
+      to: String(new Date().getFullYear() + 10).substring(2)
+    }
+  }
+}
+const expDateMasked = IMask(expDate, expDatePattern)
+
+const secCode = document.querySelector('#security-code')
+const secPattern = {
+  mask: '0000'
+}
+const secCodeMasked = IMask(secCode, secPattern)
+
+formEl.addEventListener('submit', e => {
   e.preventDefault()
   clearInputs()
   showToast()
@@ -129,8 +132,6 @@ function clearInputs() {
   const inputEl = document.querySelectorAll('input')
   inputEl.forEach(itemValue => (itemValue.value = ''))
 }
-
-const cardHolder = document.querySelector('#card-holder')
 
 cardHolder.addEventListener('input', e => {
   const cardNameEl = document.querySelector('.cc-holder .value')
