@@ -12,9 +12,10 @@ console.log(ccLogo.src)
 
 function setCardType(cardType) {
   const colors = {
-    visa: ['#2D57F2', '#436D99'],
+    visa: ['#FFED4D', '#436D99'],
     mastercard: ['#C69347', '#DF6F29'],
     javascript: ['#EFF30A', '#CBC88C'],
+    typescript: ['#FFED4D', '#436D99'],
     default: ['black', 'gray']
   }
 
@@ -82,7 +83,7 @@ const cardNumPattern = {
     {
       mask: '0000 000000 00000',
       regex: /^3[47]\d{0,13}/,
-      cardType: 'american express'
+      cardType: 'typescript'
     },
     {
       mask: '0000 0000 0000 0000',
